@@ -36,6 +36,14 @@
 	</entry>
 	
 	
+	<!-- 부서명 검색 -->
+	<entry key="searchDepartment">
+		SELECT * FROM DEPARTMENT4
+		WHERE DEPT_TITLE LIKE '%' || ? || '%' 
+	</entry>
+	
+	
+	
 	
 	
 	
