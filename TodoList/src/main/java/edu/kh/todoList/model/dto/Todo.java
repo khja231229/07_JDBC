@@ -21,7 +21,12 @@ public class Todo {
 	}
 
 
-
+	public Todo(int todoNo, String todoTitle, String todoContent) {
+		super();
+		this.todoNo = todoNo;
+		this.todoTitle = todoTitle;
+		this.todoContent = todoContent;
+	}
 
 	// getter / setter
 	public int getTodoNo() {

@@ -133,6 +133,112 @@ public class TodoDAOImpl implements TodoDAO{
 	
 	
 	
+	// 할 일 상세 조회
+	@Override
+	public Todo selectTodo(Connection conn, int todoNo) throws SQLException {
+	
+		// 결과 저장용 변수 선언 / 객체 생성;
+		Todo todo = null;
+		
+		try {
+			String sql = prop.getProperty("selectTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, todoNo);
+			
+			rs = pstmt.executeQuery(); // SQL 수행, 결과 반환
+			
+			if(rs.next()) { // 조회 결과가 있어도 1행 밖에 없음 
+											// == if 사용이 효율적
+				
+				todo = new Todo();
+				
+				todo.setTodoNo			(rs.getInt("TODO_NO"));
+				todo.setTodoTitle		(rs.getString("TODO_TITLE"));
+				todo.setTodoContent	(rs.getString("TODO_CONTENT"));
+				todo.setComplete		(rs.getString("COMPLETE"));
+				todo.setRegDate			(rs.getString("REG_DATE"));
+			}
+			
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return todo;
+	}
+	
+	// 완료 여부 수정
+	@Override
+	public int changeComplete(Connection conn, int todoNo, String complete) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("changeComplete");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, complete);
+			pstmt.setInt(2, todoNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
+	
+	// 할 일 수정
+	@Override
+	public int updateTodo(Connection conn, Todo todo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("updateTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, todo.getTodoTitle());
+			pstmt.setString(2, todo.getTodoContent());
+			pstmt.setInt   (3, todo.getTodoNo());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
+	
+	// 할 일 삭제
+	@Override
+	public int deleteTodo(Connection conn, int todoNo) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("deleteTodo");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt   (1, todoNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
 	
 	
 }

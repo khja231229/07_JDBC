@@ -70,6 +70,69 @@ public class TodoServiceImpl implements TodoService{
 	}
 	
 	
+	// 할 일 상세 조회
+	@Override
+	public Todo selectTodo(int todoNo) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		Todo todo = dao.selectTodo(conn, todoNo);
+		
+		close(conn);
+		
+		return todo;
+	}
+	
+	
+	//완료 여부 수정
+	@Override
+	public int changeComplete(int todoNo, String complete) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		int result = dao.changeComplete(conn, todoNo, complete);
+		
+		if(result > 0) 	commit(conn);
+		else						rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+	
+	
+	// 할 일 수정
+	@Override
+	public int updateTodo(Todo todo) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		int result = dao.updateTodo(conn, todo);
+		
+		if(result > 0)	commit(conn);
+		else						rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+	
+	
+	// 할 일 삭제
+	@Override
+	public int deleteTodo(int todoNo) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		int result = dao.deleteTodo(conn, todoNo);
+		
+		if(result > 0)	commit(conn);
+		else						rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
 	
 	
 	
